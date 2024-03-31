@@ -12,7 +12,7 @@ module.exports = function (app) {
     const regex = /^\s*$/;
     const str = req.body.text;
     const isBlankOrWhiteSpace = regex.test(str);
-    text = text.replace(/\s+/g, " ").trim();
+    text = text.replace(/\s+/g, " ").trim().toLowerCase();
 
     // error responses
     if (isBlankOrWhiteSpace) {
@@ -30,12 +30,24 @@ module.exports = function (app) {
       case "american-to-british":
         {
           let translated = translator.britishOutput(text);
-          return res.json({ translation: translated });
+          if (!translated) {
+            return res.json({
+              text: text,
+              translation: "Everyting looks good to me!",
+            });
+          }
+          return res.json({ text: text, translation: translated });
         }
         break;
       case "british-to-american": {
         let translated = translator.americanOutput(text);
-        return res.json({ translation: translated });
+        if (!translated) {
+          return res.json({
+            text: text,
+            translation: "Everyting looks good to me!",
+          });
+        }
+        return res.json({ text: text, translation: translated });
       }
     }
   });

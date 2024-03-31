@@ -5,7 +5,12 @@ const britishOnly = require("./british-only.js");
 
 class Translator {
   transListBuilder() {
-    let transList = [];
+    let List = {
+      transList: [],
+      american: [],
+      british: [],
+    };
+
     let objList = [
       americanToBritishTitles,
       americanOnly,
@@ -16,18 +21,54 @@ class Translator {
       let obj = objList[i];
       Object.keys(obj).forEach((key) => {
         if (obj === britishOnly) {
-          transList.push([obj[key], key]);
+          List.transList.push([obj[key], key]);
+          List.american.push(obj[key]);
+          List.british.push(key);
         } else {
-          transList.push([key, obj[key]]);
+          List.transList.push([key, obj[key]]);
+          List.american.push(key);
+          List.british.push(obj[key]);
         }
       });
     }
-    return transList;
+    return List;
+  }
+
+  needsTranslation(text, locale) {
+    let List = this.transListBuilder();
+    switch (locale) {
+      case "americanInput":
+        {
+          let amerList = List.american;
+          let textArr = text.split(" ");
+          for (let i = 0; i < textArr.length; i++) {
+            if (amerList.includes(textArr[i])) {
+              return true;
+            }
+          }
+          return false;
+        }
+        break;
+      case "britishInput": {
+        let britList = List.british;
+        let textArr = text.split(" ");
+        for (let i = 0; i < textArr.length; i++) {
+          if (britList.includes(textArr[i])) {
+            return true;
+          }
+        }
+        return false;
+      }
+    }
   }
 
   britishOutput(text) {
+    let translationNeeded = this.needsTranslation(text, "americanInput");
+    if (!translationNeeded) {
+      return false;
+    }
     // words to translate
-    let transArr = this.transListBuilder();
+    let transArr = this.transListBuilder().transList;
     // time change
     text = text.replace(/(\d+):(\d+)/, '<span class="highlight">$1.$2</span>');
 
@@ -54,8 +95,12 @@ class Translator {
     return text;
   }
   americanOutput(text) {
+    let translationNeeded = this.needsTranslation(text, "britishInput");
+    if (!translationNeeded) {
+      return false;
+    }
     // words to translate
-    let transArr = this.transListBuilder();
+    let transArr = this.transListBuilder().transList;
     // time changer
     text = text.replace(/(\d+)\.(\d+)/, '<span class="highlight">$1:$2</span>');
 
