@@ -9,18 +9,21 @@ module.exports = function (app) {
   app.route("/api/translate").post((req, res) => {
     // setup data
     let { text, locale } = req.body;
+
     const regex = /^\s*$/;
     const str = req.body.text;
     const isBlankOrWhiteSpace = regex.test(str);
-    text = text.replace(/\s+/g, " ").trim().toLowerCase();
-
-    // error responses
     if (isBlankOrWhiteSpace) {
       return res.json({ error: "No text to translate" });
     }
     if (!text || !locale) {
       return res.json({ error: "Required field(s) missing" });
     }
+    console.log(text);
+    text = text.replace(/\s+/g, " ").trim().toLowerCase();
+
+    // error responses
+
     if (!validLocales.includes(locale)) {
       return res.json({ error: "Invalid value for locale field" });
     }
@@ -36,7 +39,7 @@ module.exports = function (app) {
               translation: "Everyting looks good to me!",
             });
           }
-          return res.json({ text: text, translation: translated });
+          return res.json({ text, translation: translated });
         }
         break;
       case "british-to-american": {
@@ -47,7 +50,7 @@ module.exports = function (app) {
             translation: "Everyting looks good to me!",
           });
         }
-        return res.json({ text: text, translation: translated });
+        return res.json({ text, translation: translated });
       }
     }
   });
