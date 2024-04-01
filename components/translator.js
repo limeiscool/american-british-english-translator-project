@@ -41,6 +41,13 @@ class Translator {
         {
           let amerList = List.american;
           let textArr = text.split(" ");
+
+          // test textArr to see if there is time to be changed
+          const regex = /\b\d{1,2}:\d{2}\b/;
+          const hasTime = regex.test(text)
+          if (hasTime) {
+            return true;
+          }
           for (let i = 0; i < textArr.length; i++) {
             if (amerList.includes(textArr[i])) {
               return true;
@@ -52,6 +59,11 @@ class Translator {
       case "britishInput": {
         let britList = List.british;
         let textArr = text.split(" ");
+        let regex = /\b\d{1,2}.\d{2}\b/;
+        const hasTime = regex.test(text);
+        if (hasTime) {
+          return true;
+        }
         for (let i = 0; i < textArr.length; i++) {
           if (britList.includes(textArr[i])) {
             return true;

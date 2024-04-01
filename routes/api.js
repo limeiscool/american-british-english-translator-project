@@ -9,18 +9,16 @@ module.exports = function (app) {
   app.route("/api/translate").post((req, res) => {
     // setup data
     let { text, locale } = req.body;
-
+    let copyText = text;
     const regex = /^\s*$/;
-    const str = req.body.text;
-    const isBlankOrWhiteSpace = regex.test(str);
+    const isBlankOrWhiteSpace = regex.test(copyText);
     if (isBlankOrWhiteSpace) {
       return res.json({ error: "No text to translate" });
     }
     if (!text || !locale) {
       return res.json({ error: "Required field(s) missing" });
     }
-    console.log(text);
-    text = text.replace(/\s+/g, " ").trim().toLowerCase();
+    copyText = copyText.replace(/\s+/g, " ").trim();
 
     // error responses
 
@@ -32,25 +30,27 @@ module.exports = function (app) {
     switch (locale) {
       case "american-to-british":
         {
-          let translated = translator.britishOutput(text);
+          let translated = translator.britishOutput(copyText);
+          console.log(text);
           if (!translated) {
             return res.json({
               text: text,
               translation: "Everyting looks good to me!",
             });
           }
-          return res.json({ text, translation: translated });
+          return res.json({ text: text, translation: translated });
         }
         break;
       case "british-to-american": {
-        let translated = translator.americanOutput(text);
+        let translated = translator.americanOutput(copyText);
+        console.log(text);
         if (!translated) {
           return res.json({
             text: text,
             translation: "Everyting looks good to me!",
           });
         }
-        return res.json({ text, translation: translated });
+        return res.json({ text: text, translation: translated });
       }
     }
   });
