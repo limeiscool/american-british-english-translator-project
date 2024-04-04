@@ -35,16 +35,17 @@ class Translator {
   }
 
   needsTranslation(text, locale) {
+    let textCopy = text.slice().toLowerCase();
     let List = this.transListBuilder();
     switch (locale) {
       case "americanInput":
         {
           let amerList = List.american;
-          let textArr = text.split(" ");
+          let textArr = textCopy.split(" ");
 
           // test textArr to see if there is time to be changed
           const regex = /\b\d{1,2}:\d{2}\b/;
-          const hasTime = regex.test(text)
+          const hasTime = regex.test(textCopy);
           if (hasTime) {
             return true;
           }
@@ -58,9 +59,9 @@ class Translator {
         break;
       case "britishInput": {
         let britList = List.british;
-        let textArr = text.split(" ");
+        let textArr = textCopy.split(" ");
         let regex = /\b\d{1,2}.\d{2}\b/;
-        const hasTime = regex.test(text);
+        const hasTime = regex.test(textCopy);
         if (hasTime) {
           return true;
         }
@@ -81,28 +82,42 @@ class Translator {
     }
     // words to translate
     let transArr = this.transListBuilder().transList;
+    let textList = text.split(" ");
     // time change
     text = text.replace(/(\d+):(\d+)/, '<span class="highlight">$1.$2</span>');
 
     // translator
     for (let i = 0; i < transArr.length; i++) {
       let [amer, brit] = transArr[i];
-      let dotPattern = /\w+\./;
       // title changer needed cause amer will have a "."
-      if (dotPattern.test(amer)) {
+      if (amer.endsWith(".")) {
+        let regex = new RegExp(amer, "ig");
         text = text.replace(
-          amer,
-          '<span class="highlight">' + brit + "</span>"
+          regex,
+          '<span class="highlight">' +
+            brit[0].toUpperCase() +
+            brit.slice(1) +
+            "</span>"
         );
         // translator \\b to match standalone word
       } else {
         let regex = new RegExp("\\b" + amer + "\\b", "g");
+        if (text.startsWith(amer)) {
+          text = text.replace(
+            regex,
+            '<span class="highlight">' +
+              brit[0].toUpperCase() +
+              brit.slice(1) +
+              "</span>"
+          );
+        }
         text = text.replace(
           regex,
           '<span class="highlight">' + brit + "</span>"
         );
       }
     }
+    text = text[0].toUpperCase() + text.slice(1);
     // solution return
     return text;
   }
@@ -120,8 +135,32 @@ class Translator {
     for (let i = 0; i < transArr.length; i++) {
       let [amer, brit] = transArr[i];
       let regex = new RegExp("\\b" + brit + "\\b", "g");
-      text = text.replace(regex, '<span class="highlight">' + amer + "</span>");
+      if (amer.endsWith(".")) {
+        text = text.replace(
+          regex,
+          '<span class="highlight">' +
+            amer[0].toUpperCase() +
+            amer.slice(1) +
+            "</span>"
+        );
+      } else {
+        if (text.startsWith(brit)) {
+          text = text.replace(
+            regex,
+            '<span class="highlight">' +
+              amer[0].toUpperCase() +
+              amer.slice(1) +
+              "</span>"
+          );
+        } else {
+          text = text.replace(
+            regex,
+            '<span class="highlight">' + amer + "</span>"
+          );
+        }
+      }
     }
+    text = text[0].toUpperCase() + text.slice(1);
     // solution return
     return text;
   }

@@ -35,7 +35,7 @@ module.exports = function (app) {
           if (!translated) {
             return res.json({
               text: text,
-              translation: "Everyting looks good to me!",
+              translation: "Everything looks good to me!",
             });
           }
           return res.json({ text: text, translation: translated });
@@ -47,7 +47,7 @@ module.exports = function (app) {
         if (!translated) {
           return res.json({
             text: text,
-            translation: "Everyting looks good to me!",
+            translation: "Everything looks good to me!",
           });
         }
         return res.json({ text: text, translation: translated });
