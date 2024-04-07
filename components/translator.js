@@ -36,6 +36,9 @@ class Translator {
 
   needsTranslation(text, locale) {
     let textCopy = text.slice().toLowerCase();
+    textCopy[textCopy.length - 1] === "."
+      ? (textCopy = textCopy.slice(0, -1))
+      : null;
     let List = this.transListBuilder();
     switch (locale) {
       case "americanInput":
@@ -101,7 +104,7 @@ class Translator {
         );
         // translator \\b to match standalone word
       } else {
-        let regex = new RegExp("\\b" + amer + "\\b", "g");
+        let regex = new RegExp("\\b" + amer + "(?=\\b|\\.)", "g");
         if (text.startsWith(amer)) {
           text = text.replace(
             regex,

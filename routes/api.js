@@ -31,7 +31,6 @@ module.exports = function (app) {
       case "american-to-british":
         {
           let translated = translator.britishOutput(copyText);
-          console.log(text);
           if (!translated) {
             return res.json({
               text: text,
@@ -43,7 +42,6 @@ module.exports = function (app) {
         break;
       case "british-to-american": {
         let translated = translator.americanOutput(copyText);
-        console.log(text);
         if (!translated) {
           return res.json({
             text: text,
