@@ -58,7 +58,11 @@ class Translator {
         break;
       case "britishInput": {
         let britList = List.british;
+        let regex = new RegExp(/(\d+)\.(\d+)/, "g");
         for (let i = 0; i < britList.length; i++) {
+          if (textCopy.match(regex)) {
+            return true;
+          }
           if (textCopy.includes(britList[i])) {
             return true;
           }

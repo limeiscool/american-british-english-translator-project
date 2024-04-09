@@ -140,68 +140,83 @@ suite("Unit Tests", () => {
     done();
   });
 
-  // test("Translate 'I've just got bits and bobs in my bum bag.' to American English", (done) => {
-  //   let text = "I've just got bits and bobs in my bum bag.";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Translate 'I've just got bits and bobs in my bum bag.' to American English", (done) => {
+    let text = "I've just got bits and bobs in my bum bag.";
+    let translated = translator.americanOutput(text);
+    let ex =
+      'I\'ve just got <span class="highlight">odds and ends</span> in my <span class="highlight">fanny pack</span>.';
+    assert.equal(translated, ex);
+    done();
+  });
 
-  // test("Translate 'The car boot sale at Boxted Airfield was called off.' to American English", (done) => {
-  //   let text = "The car boot sale at Boxted Airfield was called off.";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Translate 'The car boot sale at Boxted Airfield was called off.' to American English", (done) => {
+    let text = "The car boot sale at Boxted Airfield was called off.";
+    let translated = translator.americanOutput(text);
+    let ex =
+      'The <span class="highlight">swap meet</span> at Boxted Airfield was called off.';
+    assert.equal(translated, ex);
+    done();
+  });
 
-  // test("Translate 'Have you met Mrs Kalyani?' to American English", (done) => {
-  //   let text = "Have you met Mrs Kalyani?";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Translate 'Have you met Mrs Kalyani?' to American English", (done) => {
+    let text = "Have you met Mrs Kalyani?";
+    let translated = translator.americanOutput(text);
+    let ex = 'Have you met <span class="highlight">Mrs.</span> Kalyani?';
+    assert.equal(translated, ex);
+    done();
+  });
 
-  // test("Translate 'Prof Joyner of King's College, London.' to American English", (done) => {
-  //   let text = "Prof Joyner of King's College, London.";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Translate 'Prof Joyner of King's College, London.' to American English", (done) => {
+    let text = "Prof Joyner of King's College, London.";
+    let translated = translator.americanOutput(text);
+    let ex =
+      '<span class="highlight">Prof.</span> Joyner of King\'s College, London.';
+    assert.equal(translated, ex);
+    done();
+  });
 
-  // test("Translate 'Tea time is usually around 4 or 4.30.' to American English", (done) => {
-  //   let text = "Tea time is usually around 4 or 4.30.";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Translate 'Tea time is usually around 4 or 4.30.' to American English", (done) => {
+    let text = "Tea time is usually around 4 or 4.30.";
+    let translated = translator.americanOutput(text);
+    let ex =
+      'Tea time is usually around 4 or <span class="highlight">4:30</span>.';
+    assert.equal(translated, ex);
+    done();
+  });
 
-  // test("Highlight translation in 'Mangoes are my favorite fruit.'", (done) => {
-  //   let text = "Mangoes are my favorite fruit.";
+  test("Highlight translation in 'Mangoes are my favorite fruit.'", (done) => {
+    let text = "Mangoes are my favorite fruit.";
+    let translated = translator.britishOutput(text);
+    assert.isTrue(
+      translated.includes('<span class="highlight">favourite</span>')
+    );
+    done();
+  });
 
-  //   let translated = translator.britishOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Highlight translation in 'I ate yogurt for breakfast.'", (done) => {
+    let text = "I ate yogurt for breakfast.";
+    let translated = translator.britishOutput(text);
+    assert.isTrue(
+      translated.includes('<span class="highlight">yoghurt</span>')
+    );
+    assert.isTrue(
+      translated.includes('<span class="highlight">brekkie</span>')
+    );
+    done();
+  });
+  test("Highlight translation in 'We watched the footie match for a while.'", (done) => {
+    let text = "We watched the footie match for a while.";
+    let translated = translator.americanOutput(text);
+    assert.isTrue(translated.includes('<span class="highlight">soccer</span>'));
+    done();
+  });
 
-  // test("Highlight translation in 'I ate yogurt for breakfast.'", (done) => {
-  //   let text = "I ate yogurt for breakfast.";
-
-  //   let translated = translator.britishOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
-
-  // test("Highlight translation in 'We watched the footie match for a while.'", (done) => {
-  //   let text = "We watched the footie match for a while.";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
-
-  // test("Highlight translation in 'Paracetamol takes up to an hour to work.'", (done) => {
-  //   let text = "Paracetamol takes up to an hour to work.";
-  //   let translated = translator.americanOutput(text);
-  //   assert.equal(translated, "");
-  //   done();
-  // });
+  test("Highlight translation in 'Paracetamol takes up to an hour to work.'", (done) => {
+    let text = "Paracetamol takes up to an hour to work.";
+    let translated = translator.americanOutput(text);
+    assert.isTrue(
+      translated.includes('<span class="highlight">Acetaminophen</span>')
+    );
+    done();
+  });
 });
